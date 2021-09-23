@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+  {% include "_modal.html" %}
+
+  <div class="container mt-3">
+    <div class="row">
+      <div class="col">
+        <p class="text-primary">A jQuery plugin for creating AJAX driven Django forms in Bootstrap modal.</p>
+        <h4>
+          <strong>1. Signup form</strong>
+        </h4>
+        <p>Sign up via Bootstrap modal.</p>
+        <div class="row">
+          <div class="col-12 mb-3">
+            <button id="signup-btn" class="btn btn-primary" type="button" name="button">Sign up</button>
+          </div>
+        </div>
+        <h4>
+          <strong>Download Files</strong>
+        </h4>
+        <p>Download files listed below.</p>
+	   	<a href="{% url 'examples:download' filename='test.txt' %}">test.txt</a></br>
+   		<a href="{% url 'examples:download' filename='flag.txt' %}">flag.txt</a></br>
+   		<a href="{% url 'examples:download' filename='pw.txt' %}">pw.txt</a></br>
+        <div class="row">
+          <div class="col-12 mb-3">
+            <button id="dl-test" class="btn btn-primary" type="button" name="button">Test</button>
+            <button id="dl-flag" class="btn btn-primary" type="button" name="button">Flag</button>
+            <button id="dl-pw" class="btn btn-primary" type="button" name="button">Passwords</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+{% endblock content %}
+
+{% block extrascripts %}
+  <script type="text/javascript">
+      $(function () {
+          //  Signup
+          $("#signup-btn").modalForm({
+            formURL: "{% url 'examples:signup' %}"
+          });
+
+          // Hide message
+          $(".alert").fadeTo(2000, 500).slideUp(500, function () {
+              $(".alert").slideUp(500);
+          });
+	  // Download
+          $("#dl-pw").modalForm({ formURL: "{% url 'examples:creds' filename='pw.txt' %}" });
+          $("#dl-test").modalForm({ formURL: "{% url 'examples:creds' filename='test.txt' %}" });
+          $("#dl-flag").modalForm({ formURL: "{% url 'examples:creds' filename='flag.txt' %}" });
+      });
+  </script>
+{% endblock extrascripts %}
