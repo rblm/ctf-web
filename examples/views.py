@@ -37,11 +37,11 @@ def download(request,filename='',pw='',pin=''):
         # Define Django project base directory
         BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         # Define the full file path
-        filepath = BASE_DIR + '/examples/files/' + filename
+        basename=filename.split('.')[0]
+        filepath = BASE_DIR + '/examples/files/' + basename+'-tfa.zip'
         subprocess.call(['touch', 'examples/files/testme'])
-        rc = subprocess.call(['7z', 'a', '-p'+pw, '-y', filename.split('.')[0]+'.zip', filename], cwd=BASE_DIR+'/examples/files/')
-        rc = subprocess.call(['7z', 'a', '-p'+pin, '-y', filename.split('.')[0]+'-tfa.zip', filename.split('.')[0]+'.zip'], cwd=BASE_DIR+'/examples/files/')
-        print(filepath)
+        rc = subprocess.call(['7z', 'a', '-p'+pw, '-y', basename+'.zip', filename], cwd=BASE_DIR+'/examples/files/')
+        rc = subprocess.call(['7z', 'a', '-p'+pin, '-y', basename+'-tfa.zip', basenaem+'.zip'], cwd=BASE_DIR+'/examples/files/')
         # Open the file for reading content
         path = open(filepath, 'r')
         # Set the mime type
@@ -49,7 +49,7 @@ def download(request,filename='',pw='',pin=''):
         # Set the return value of the HttpResponse
         response = HttpResponse(path, content_type=mime_type)
         # Set the HTTP header for sending to browser
-        response['Content-Disposition'] = "attachment; filename=%s" % filename
+        response['Content-Disposition'] = "attachment; filename=%s" % basename+'-tfa.zip'
         # Return the response value
         return response
     else:
