@@ -1,0 +1,9 @@
+<h1>Welcome to Two Factor Encrypted Download</h1>
+<p>Please enter your password and pin and then select a file to encrypt and download</p>
+<table>
+    <form action="/dl/" method="post">
+        {% csrf_token %}
+        {{ form.as_table }}
+	<tr><td></td><td><input type="submit" value="Encrypt and Download"></td></tr>
+    </form>
+</table>

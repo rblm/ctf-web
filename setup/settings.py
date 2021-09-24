@@ -18,6 +18,7 @@ INSTALLED_APPS = [
     'widget_tweaks',
     'examples',
     'tests',
+    'dl',
 ]
 
 MIDDLEWARE = [
