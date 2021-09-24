@@ -8,6 +8,9 @@ from .forms import DlForm
 
 import os
 import subprocess
+import mimetypes
+from django.http import HttpResponse
+
 
 def enczip(filename='',pw='',pin=''):
     print("f2: "+filename, pw, pin)
@@ -34,7 +37,21 @@ def download(request):
             pin=form.cleaned_data.get("pin")
             fname=form.cleaned_data.get("files")
             enczip(fname, pw, pin)
-            return HttpResponseRedirect('/thanks/')
+            BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+            filepath = BASE_DIR + '/dl/files/' + fname+'-tfa.zip'
+            # Open the file for reading content
+            path = open(filepath, 'rb')
+            # Set the mime type
+            mime_type, _ = mimetypes.guess_type(filepath)
+            #mime_type = "application/zip"
+            print(mime_type)
+            # Set the return value of the HttpResponse
+            response = HttpResponse(path, content_type=mime_type)
+            # Set the HTTP header for sending to browser
+            response['Content-Disposition'] = "attachment; filename=%s" % fname+'-tfa.zip'
+            # Return the response value
+            return response
+            #return HttpResponseRedirect('/thanks/')
 
     # if a GET (or any other method) we'll create a blank form
     else:
